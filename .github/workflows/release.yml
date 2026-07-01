@@ -1,0 +1,133 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      notes:
+        description: "Release notes for GitHub, Play, and F-Droid (max 500 characters)"
+        required: true
+        type: string
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    name: CI
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    name: Tag, Build & Publish
+    runs-on: ubuntu-latest
+    needs: [ci]
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Validate release request
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          RELEASE_NOTES: ${{ inputs.notes }}
+        run: |
+          if [[ "$GITHUB_REF_NAME" != "$DEFAULT_BRANCH" ]]; then
+            echo "Releases must run from the default branch ($DEFAULT_BRANCH)." >&2
+            exit 1
+          fi
+          if [[ -z "${RELEASE_NOTES//[[:space:]]/}" ]]; then
+            echo "Release notes must not be empty." >&2
+            exit 1
+          fi
+          if (( ${#RELEASE_NOTES} > 500 )); then
+            echo "Release notes must be 500 characters or fewer." >&2
+            exit 1
+          fi
+
+      - name: Generate version
+        id: version
+        run: |
+          NOW="$(date -u +%s)"
+          RELEASE_TIMESTAMP="$(date -u -d "@$NOW" +%Y%m%d%H%M%S)"
+          # Clean display string shown to users as versionName.
+          VERSION_NAME="$(date -u -d "@$NOW" +%Y-%m-%d)"
+          # Monotonic versionCode: minutes since 2025-01-01 UTC (fits a signed int
+          # until ~year 6000; increases by 1 per minute).
+          VERSION_CODE=$(( ( NOW - 1735689600 ) / 60 ))
+          {
+            echo "release_timestamp=$RELEASE_TIMESTAMP"
+            echo "version_name=$VERSION_NAME"
+            echo "version_code=$VERSION_CODE"
+          } >> "$GITHUB_OUTPUT"
+          echo "versionName: $VERSION_NAME | versionCode: $VERSION_CODE"
+
+      - name: Create release commit and tag
+        id: release_ref
+        env:
+          RELEASE_NOTES: ${{ inputs.notes }}
+          RELEASE_TIMESTAMP: ${{ steps.version.outputs.release_timestamp }}
+          VERSION_NAME: ${{ steps.version.outputs.version_name }}
+          VERSION_CODE: ${{ steps.version.outputs.version_code }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          printf 'VERSION_NAME=%s\nVERSION_CODE=%s\n' "$VERSION_NAME" "$VERSION_CODE" > version.properties
+          CHANGELOG="fastlane/metadata/android/en-US/changelogs/$VERSION_CODE.txt"
+          if [[ -e "$CHANGELOG" ]]; then
+            echo "Changelog already exists: $CHANGELOG" >&2
+            exit 1
+          fi
+          printf '%s\n' "$RELEASE_NOTES" > "$CHANGELOG"
+          git add version.properties "$CHANGELOG"
+          git commit -m "Release $VERSION_NAME ($VERSION_CODE) [skip ci]"
+          COMMIT_SHA="$(git rev-parse HEAD)"
+          TAG="$RELEASE_TIMESTAMP-$(git rev-parse --short=9 "$COMMIT_SHA")"
+          git tag -a "$TAG" -m "Release $TAG"
+          {
+            echo "tag=$TAG"
+            echo "commit_sha=$COMMIT_SHA"
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo "### Release $VERSION_NAME"
+            echo "- Tag: \`$TAG\`"
+            echo "- Version code: \`$VERSION_CODE\`"
+            echo "- Commit: \`$COMMIT_SHA\`"
+            echo "- Changelog: \`$CHANGELOG\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "Created release commit and tag $TAG"
+
+      - name: Build release APK
+        # Signing config is added in a later publishing step; this APK is
+        # currently unsigned.
+        run: ./gradlew assembleRelease
+
+      - name: Push release commit and tag
+        env:
+          TAG: ${{ steps.release_ref.outputs.tag }}
+        run: git push origin "HEAD:$GITHUB_REF_NAME" "$TAG"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ steps.release_ref.outputs.tag }}
+          name: ${{ steps.release_ref.outputs.tag }}
+          body: ${{ inputs.notes }}
+          generate_release_notes: true
+          files: app/build/outputs/apk/release/*.apk

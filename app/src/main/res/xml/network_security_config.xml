@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--
+      Release configuration: cleartext HTTP is disallowed. Self-hosted or
+      otherwise, production servers must be reached over HTTPS with a valid
+      certificate (system-trusted, or a user-added CA which Android honours by
+      default for user trust anchors on API 24+ when the site presents one).
+
+      Local development uses app/src/debug/res/xml/network_security_config.xml,
+      which relaxes this to permit cleartext to LAN hosts.
+    -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

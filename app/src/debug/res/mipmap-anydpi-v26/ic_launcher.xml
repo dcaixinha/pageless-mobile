@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The maskable artwork is full-bleed (its own gradient background + safe
+         inset for the content), so it's used as the background layer; the OS
+         mask crops the corners. -->
+    <background android:drawable="@mipmap/ic_launcher_foreground" />
+    <foreground android:drawable="@android:color/transparent" />
+    <monochrome android:drawable="@drawable/ic_launcher_monochrome" />
+</adaptive-icon>

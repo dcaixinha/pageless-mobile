@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="500" viewBox="0 0 1024 500">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16141F"/>
+      <stop offset="0.58" stop-color="#211A38"/>
+      <stop offset="1" stop-color="#3B1673"/>
+    </linearGradient>
+    <radialGradient id="purpleGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#8B5CF6" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#8B5CF6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="iconBackground" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1C0A44"/>
+      <stop offset="1" stop-color="#3D1585"/>
+    </linearGradient>
+    <linearGradient id="barOne" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#A970FF"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="barTwo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#5B21B6"/>
+    </linearGradient>
+    <linearGradient id="barThree" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#D9BCFF"/>
+      <stop offset="1" stop-color="#9333EA"/>
+    </linearGradient>
+    <filter id="phoneShadow" x="-40%" y="-20%" width="180%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="18" result="blur"/>
+      <feOffset dy="14" result="offset"/>
+      <feColorMatrix in="offset" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .65 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <clipPath id="screenClip">
+      <rect x="713" y="30" width="278" height="608" rx="34"/>
+    </clipPath>
+  </defs>
+
+  <rect width="1024" height="500" fill="url(#background)"/>
+  <ellipse cx="932" cy="386" rx="330" ry="310" fill="url(#purpleGlow)"/>
+  <circle cx="967" cy="34" r="176" fill="none" stroke="#C4B5FD" stroke-opacity="0.08" stroke-width="2"/>
+  <circle cx="967" cy="34" r="126" fill="none" stroke="#C4B5FD" stroke-opacity="0.07" stroke-width="2"/>
+
+  <g transform="translate(68 58)">
+    <rect width="68" height="68" rx="15" fill="url(#iconBackground)"/>
+    <rect x="14" y="20" width="11" height="32" rx="2.5" fill="url(#barOne)"/>
+    <rect x="27" y="23" width="11" height="29" rx="2.5" fill="url(#barTwo)"/>
+    <rect x="40" y="20" width="10" height="32" rx="2.5" fill="url(#barThree)"/>
+    <g fill="#D9BCFF">
+      <rect x="51" y="24" width="5" height="5" rx="1" fill-opacity="0.72"/>
+      <rect x="52" y="35" width="4.5" height="4.5" rx="1" fill-opacity="0.58"/>
+      <rect x="51" y="46" width="4" height="4" rx="1" fill-opacity="0.46"/>
+      <rect x="58" y="30" width="3.5" height="3.5" rx="0.8" fill-opacity="0.36"/>
+      <rect x="59" y="41" width="3" height="3" rx="0.7" fill-opacity="0.25"/>
+    </g>
+  </g>
+
+  <text x="154" y="103" fill="#F5F3FF" font-family="JetBrains Mono, DejaVu Sans Mono, monospace" font-size="36" font-weight="700" letter-spacing="0.5">Pageless</text>
+  <text x="70" y="176" fill="#A78BFA" font-family="DejaVu Sans, sans-serif" font-size="15" font-weight="700" letter-spacing="3">SELF-HOSTED  /  OFFLINE-FIRST</text>
+  <text x="66" y="250" fill="#FFFFFF" font-family="DejaVu Sans, sans-serif" font-size="54" font-weight="700" letter-spacing="-2">Your audiobooks,</text>
+  <text x="66" y="310" fill="#FFFFFF" font-family="DejaVu Sans, sans-serif" font-size="54" font-weight="700" letter-spacing="-2">anywhere.</text>
+  <text x="70" y="361" fill="#C9C3D8" font-family="DejaVu Sans, sans-serif" font-size="20" font-weight="400">Listen freely. Keep your library yours.</text>
+
+  <g filter="url(#phoneShadow)">
+    <rect x="700" y="17" width="304" height="628" rx="47" fill="#060608" stroke="#4B4263" stroke-width="2"/>
+    <g clip-path="url(#screenClip)">
+      <rect x="713" y="30" width="278" height="608" fill="#16141F"/>
+      <image x="713" y="30" width="278" height="620" xlink:href="screenshots/raw/01_home_dark.png" preserveAspectRatio="xMidYMin slice"/>
+    </g>
+    <circle cx="852" cy="43" r="8" fill="#000000"/>
+  </g>
+</svg>

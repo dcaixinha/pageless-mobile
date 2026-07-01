@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--
+      DEBUG ONLY. During local development the Pageless server is typically
+      reached over plain HTTP at an arbitrary LAN IP the developer controls
+      (e.g. 192.168.x.x) or the emulator alias 10.0.2.2. Android matches
+      cleartext rules by exact host (not CIDR), so enumerating subnets is
+      impractical; cleartext is permitted broadly for debug builds only.
+
+      The release build uses app/src/main/res/xml/network_security_config.xml,
+      which forbids cleartext and requires HTTPS.
+    -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

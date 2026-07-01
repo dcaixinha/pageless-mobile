@@ -1,0 +1,43 @@
+# F-Droid metadata for the OFFICIAL repo.
+#
+# This file is NOT read from this repository — it is a ready-to-submit copy of
+# the recipe that must live in fdroiddata as:
+#
+#     metadata/live.pageless.mobile.yml
+#
+# To publish on the official F-Droid repo:
+#   1. Fork https://gitlab.com/fdroid/fdroiddata
+#   2. Copy this file to metadata/live.pageless.mobile.yml
+#   3. Fill in the first release's version and full commit SHA. Later releases
+#      are detected automatically from the static version.properties in each tag.
+#   4. Run `fdroid lint live.pageless.mobile` and `fdroid build live.pageless.mobile`
+#   5. Open a merge request
+#
+# See https://f-droid.org/docs/Building_Applications and
+# https://f-droid.org/docs/Reference for the full metadata reference.
+
+Categories:
+  - Multimedia
+License: GPL-3.0-or-later
+AuthorName: Pageless contributors
+SourceCode: https://github.com/dcaixinha/pageless-mobile
+IssueTracker: https://github.com/dcaixinha/pageless-mobile/issues
+
+RepoType: git
+Repo: https://github.com/dcaixinha/pageless-mobile.git
+
+Builds:
+  # Replace these example values with the first release's generated values.
+  - versionName: "2026-07-13"   # match the release's versionName
+    versionCode: 804807         # match the release's versionCode
+    commit: <full-release-commit-sha>
+    subdir: app
+    gradle:
+      - release
+    # F-Droid builds and signs the APK itself; no upload key is needed here.
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags ^[0-9]{14}-[0-9a-f]{9}$
+UpdateCheckData: 'version.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=(.+)'
+CurrentVersion: "2026-07-13"
+CurrentVersionCode: 804807

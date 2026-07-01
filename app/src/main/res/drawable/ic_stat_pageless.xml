@@ -1,0 +1,32 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#FFFFFF">
+    <!--
+      Pageless status-bar / media notification silhouette. Three bars with
+      moderate gaps (kept wide enough to survive the tiny status-bar size)
+      plus THREE trailing columns of fading dots. Normalized 100-unit space
+      (content x=20..103, y=30..76), scaled 0.26 and translated to center
+      within the padded 24 viewport. Android tints it white; per-path
+      fillAlpha drives the dot fade.
+    -->
+    <group android:scaleX="0.26" android:scaleY="0.26" android:translateX="-3.2" android:translateY="-1.78">
+        <!-- bars -->
+        <path android:fillColor="#FFFFFF" android:pathData="M20,30 h11 a2.5,2.5 0 0 1 2.5,2.5 v41 a2.5,2.5 0 0 1 -2.5,2.5 h-11 a2.5,2.5 0 0 1 -2.5,-2.5 v-41 a2.5,2.5 0 0 1 2.5,-2.5 z" />
+        <path android:fillColor="#FFFFFF" android:pathData="M41,34 h11 a2.5,2.5 0 0 1 2.5,2.5 v37 a2.5,2.5 0 0 1 -2.5,2.5 h-11 a2.5,2.5 0 0 1 -2.5,-2.5 v-37 a2.5,2.5 0 0 1 2.5,-2.5 z" />
+        <path android:fillColor="#FFFFFF" android:pathData="M62,30 h11 a2.5,2.5 0 0 1 2.5,2.5 v41 a2.5,2.5 0 0 1 -2.5,2.5 h-11 a2.5,2.5 0 0 1 -2.5,-2.5 v-41 a2.5,2.5 0 0 1 2.5,-2.5 z" />
+        <!-- dot column 1 -->
+        <path android:fillColor="#FFFFFF" android:fillAlpha="1.0" android:pathData="M82,36 h6 a1.4,1.4 0 0 1 1.4,1.4 v3.2 a1.4,1.4 0 0 1 -1.4,1.4 h-6 a1.4,1.4 0 0 1 -1.4,-1.4 v-3.2 a1.4,1.4 0 0 1 1.4,-1.4 z" />
+        <path android:fillColor="#FFFFFF" android:fillAlpha="0.82" android:pathData="M82,52 h6 a1.4,1.4 0 0 1 1.4,1.4 v3.2 a1.4,1.4 0 0 1 -1.4,1.4 h-6 a1.4,1.4 0 0 1 -1.4,-1.4 v-3.2 a1.4,1.4 0 0 1 1.4,-1.4 z" />
+        <path android:fillColor="#FFFFFF" android:fillAlpha="0.66" android:pathData="M82,68 h6 a1.4,1.4 0 0 1 1.4,1.4 v3.2 a1.4,1.4 0 0 1 -1.4,1.4 h-6 a1.4,1.4 0 0 1 -1.4,-1.4 v-3.2 a1.4,1.4 0 0 1 1.4,-1.4 z" />
+        <!-- dot column 2 -->
+        <path android:fillColor="#FFFFFF" android:fillAlpha="0.62" android:pathData="M91,30 h5 a1.2,1.2 0 0 1 1.2,1.2 v2.6 a1.2,1.2 0 0 1 -1.2,1.2 h-5 a1.2,1.2 0 0 1 -1.2,-1.2 v-2.6 a1.2,1.2 0 0 1 1.2,-1.2 z" />
+        <path android:fillColor="#FFFFFF" android:fillAlpha="0.72" android:pathData="M91,44 h5 a1.2,1.2 0 0 1 1.2,1.2 v2.6 a1.2,1.2 0 0 1 -1.2,1.2 h-5 a1.2,1.2 0 0 1 -1.2,-1.2 v-2.6 a1.2,1.2 0 0 1 1.2,-1.2 z" />
+        <path android:fillColor="#FFFFFF" android:fillAlpha="0.56" android:pathData="M91,60 h5 a1.2,1.2 0 0 1 1.2,1.2 v2.6 a1.2,1.2 0 0 1 -1.2,1.2 h-5 a1.2,1.2 0 0 1 -1.2,-1.2 v-2.6 a1.2,1.2 0 0 1 1.2,-1.2 z" />
+        <!-- dot column 3 -->
+        <path android:fillColor="#FFFFFF" android:fillAlpha="0.5" android:pathData="M99,38 h4.2 a1,1 0 0 1 1,1 v2.2 a1,1 0 0 1 -1,1 h-4.2 a1,1 0 0 1 -1,-1 v-2.2 a1,1 0 0 1 1,-1 z" />
+        <path android:fillColor="#FFFFFF" android:fillAlpha="0.44" android:pathData="M99,52 h4.2 a1,1 0 0 1 1,1 v2.2 a1,1 0 0 1 -1,1 h-4.2 a1,1 0 0 1 -1,-1 v-2.2 a1,1 0 0 1 1,-1 z" />
+    </group>
+</vector>

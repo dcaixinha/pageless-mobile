@@ -1,0 +1,33 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!--
+      Monochrome silhouette for Android 13+ themed icons. The system tints the
+      whole drawable one color, so detail comes from shape: three bars of
+      varying width/height (matching the app icon) with clear gaps, plus a
+      descending cluster of dots set off to the right.
+
+      Source art uses a 100x100 viewBox. Content scaled to fit the ~66dp
+      adaptive safe zone centered in 108 (scale 0.66, translated to center).
+    -->
+    <group android:scaleX="0.66" android:scaleY="0.66" android:translateX="18" android:translateY="19">
+        <!-- Bars mirror the app icon: wide/tall, medium/shorter, narrow/tall,
+             with gaps opened between them. -->
+        <path android:fillColor="#000000" android:pathData="M20,30 h13 a3,3 0 0 1 3,3 v40 a3,3 0 0 1 -3,3 h-13 a3,3 0 0 1 -3,-3 v-40 a3,3 0 0 1 3,-3 z" />
+        <path android:fillColor="#000000" android:pathData="M41,34 h13 a3,3 0 0 1 3,3 v36 a3,3 0 0 1 -3,3 h-13 a3,3 0 0 1 -3,-3 v-36 a3,3 0 0 1 3,-3 z" />
+        <path android:fillColor="#000000" android:pathData="M62,30 h9 a3,3 0 0 1 3,3 v40 a3,3 0 0 1 -3,3 h-9 a3,3 0 0 1 -3,-3 v-40 a3,3 0 0 1 3,-3 z" />
+        <!-- Side dots: shifted right to leave a margin from the third bar. -->
+        <path android:fillColor="#000000" android:pathData="M80,36 h6.5 a1.4,1.4 0 0 1 1.4,1.4 v3.7 a1.4,1.4 0 0 1 -1.4,1.4 h-6.5 a1.4,1.4 0 0 1 -1.4,-1.4 v-3.7 a1.4,1.4 0 0 1 1.4,-1.4 z" />
+        <path android:fillColor="#000000" android:pathData="M81,52 h6 a1.3,1.3 0 0 1 1.3,1.3 v3.4 a1.3,1.3 0 0 1 -1.3,1.3 h-6 a1.3,1.3 0 0 1 -1.3,-1.3 v-3.4 a1.3,1.3 0 0 1 1.3,-1.3 z" />
+        <path android:fillColor="#000000" android:pathData="M80,66 h5.2 a1.1,1.1 0 0 1 1.1,1.1 v3 a1.1,1.1 0 0 1 -1.1,1.1 h-5.2 a1.1,1.1 0 0 1 -1.1,-1.1 v-3 a1.1,1.1 0 0 1 1.1,-1.1 z" />
+        <path android:fillColor="#000000" android:pathData="M89,44 h5 a1.1,1.1 0 0 1 1.1,1.1 v2.8 a1.1,1.1 0 0 1 -1.1,1.1 h-5 a1.1,1.1 0 0 1 -1.1,-1.1 v-2.8 a1.1,1.1 0 0 1 1.1,-1.1 z" />
+        <path android:fillColor="#000000" android:pathData="M90,30 h4.4 a1,1 0 0 1 1,1 v2.4 a1,1 0 0 1 -1,1 h-4.4 a1,1 0 0 1 -1,-1 v-2.4 a1,1 0 0 1 1,-1 z" />
+        <path android:fillColor="#000000" android:pathData="M90,60 h4.2 a1,1 0 0 1 1,1 v2.2 a1,1 0 0 1 -1,1 h-4.2 a1,1 0 0 1 -1,-1 v-2.2 a1,1 0 0 1 1,-1 z" />
+        <!-- Third, smaller layer of dots further right (fainter in the original;
+             rendered solid here since themed icons are single-tint). -->
+        <path android:fillColor="#000000" android:pathData="M97,52 h3.6 a0.8,0.8 0 0 1 0.8,0.8 v2 a0.8,0.8 0 0 1 -0.8,0.8 h-3.6 a0.8,0.8 0 0 1 -0.8,-0.8 v-2 a0.8,0.8 0 0 1 0.8,-0.8 z" />
+        <path android:fillColor="#000000" android:pathData="M98,40 h3.2 a0.7,0.7 0 0 1 0.7,0.7 v1.8 a0.7,0.7 0 0 1 -0.7,0.7 h-3.2 a0.7,0.7 0 0 1 -0.7,-0.7 v-1.8 a0.7,0.7 0 0 1 0.7,-0.7 z" />
+    </group>
+</vector>

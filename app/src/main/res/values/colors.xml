@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fallback/background tone matching the app icon's dark gradient base. -->
+    <color name="ic_launcher_background">#1C0A44</color>
+    <!-- Native launch window background; matches the app's dark purple surface. -->
+    <color name="splash_background">#1E1B2E</color>
+</resources>
