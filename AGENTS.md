@@ -220,6 +220,10 @@ on the JVM.
   user's physical device is connected so the updated build is installed for
   hands-on testing, unless the user asks not to install it.
 
+Beads Dolt auto-push is enabled with a one-minute debounce. Run `bd dolt pull`
+at the start of a work session; mutating `bd` commands may sync automatically.
+This does not authorize Git commits or Git pushes.
+
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:970c3bf2 -->
 ## Beads Issue Tracker
 
