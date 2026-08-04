@@ -96,7 +96,7 @@ jobs:
           fi
           printf '%s\n' "$RELEASE_NOTES" > "$CHANGELOG"
           git add version.properties "$CHANGELOG"
-          git commit -m "Release $VERSION_NAME ($VERSION_CODE) [skip ci]"
+          git commit -m "🔖 Release $VERSION_NAME ($VERSION_CODE) [skip ci]"
           COMMIT_SHA="$(git rev-parse HEAD)"
           TAG="$RELEASE_TIMESTAMP-$(git rev-parse --short=9 "$COMMIT_SHA")"
           git tag -a "$TAG" -m "Release $TAG"

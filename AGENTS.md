@@ -247,6 +247,25 @@ on the JVM.
   user's physical device is connected so the updated build is installed for
   hands-on testing, unless the user asks not to install it.
 
+## Commit conventions
+
+- **Every commit subject starts with a Gitmoji**, then a space, then an
+  imperative summary — e.g. `⬆️ Upgrade to AGP 9, Gradle 9.6.1 and Kotlin 2.3`.
+  Use the **literal emoji character**, not the `:shortcode:` form.
+- Pick the canonical emoji for the kind of change rather than inventing one. The
+  authoritative list of 75 is <https://gitmoji.dev> (source of truth:
+  `carloscuesta/gitmoji`).
+- Keep the subject imperative and without a trailing period. Wrap the body at
+  ~80 columns and use it to explain **why**, plus anything the diff cannot show
+  (constraints, rejected alternatives, verification performed).
+- Reference beads issues in a trailer: `Closes pm-a6l.17` when the commit
+  finishes that issue, `Refs pm-a6l.3` for related context.
+- The release workflow's automated commit uses 🔖 and **must keep its
+  `[skip ci]` marker** (`.github/workflows/release.yml`); that marker is what
+  stops the release commit from re-triggering CI.
+- Historical exception: `🌅 Initial commit` predates this convention (Gitmoji's
+  equivalent is 🎉 `:tada:`). Leave it alone, but don't copy it.
+
 Beads Dolt auto-push is enabled with a one-minute debounce. Run `bd dolt pull`
 at the start of a work session; mutating `bd` commands may sync automatically.
 This does not authorize Git commits or Git pushes.
