@@ -114,6 +114,11 @@ on the JVM.
   a book downloaded for offline use unless its cover was cached successfully.
   UI cover models should prefer the Room-tracked local cover path and only fall
   back to the authenticated server URL when no valid local cover exists.
+- **Android backup is deliberately off** (`android:allowBackup="false"`). The
+  `session` DataStore holds a plaintext bearer token, and Auto Backup would copy
+  it to Google's cloud and into device-to-device transfers. Do not re-enable it
+  without excluding `datastore/session.preferences_pb`; everything else re-syncs
+  from the server on login anyway. Rationale in `docs/privacy/data-safety.md`.
 - Debug builds allow cleartext HTTP (LAN convenience,
   `app/src/debug/res/xml/network_security_config.xml`); **release is HTTPS-only**
   (`app/src/main/res/xml/...`). Don't leak the debug convenience into release.
