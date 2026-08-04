@@ -63,7 +63,7 @@ data class PlayerState(
 class PlayerConnection
     @Inject
     constructor(
-        @ApplicationContext private val context: Context,
+        @param:ApplicationContext private val context: Context,
         private val downloadRepository: DownloadRepository,
         private val libraryRepository: LibraryRepository,
         private val progressRepository: ProgressRepository,

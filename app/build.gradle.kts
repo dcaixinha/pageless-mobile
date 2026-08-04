@@ -1,8 +1,10 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 plugins {
+    // AGP 9 compiles Kotlin itself (built-in Kotlin), so org.jetbrains.kotlin.android
+    // is intentionally not applied: it is incompatible with the new DSL.
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
@@ -71,10 +73,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         compose = true
         buildConfig = true
@@ -85,6 +83,13 @@ android {
         // class (@OptIn(UnstableApi::class)), so the default checks apply.
         warningsAsErrors = false
         abortOnError = true
+    }
+}
+
+// Built-in Kotlin (AGP 9) replaces the old android.kotlinOptions block.
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 

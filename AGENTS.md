@@ -11,20 +11,39 @@ docs; this file captures the conventions and gotchas an agent needs.
 
 ## Toolchain & build
 
-- **JDK 21** is required (AGP does not support newer JDKs). Export
-  `JAVA_HOME=/opt/android-studio/jbr` locally when using Android Studio's bundled
-  JBR. Do not pin `org.gradle.java.home` in the repository: F-Droid and CI use
-  different JDK paths.
-- **Android SDK**: platform `android-35`, build-tools `34.0.0`, platform-tools.
-  Export `ANDROID_HOME=~/.Android/Sdk` (or set `sdk.dir` in `local.properties`)
-  before running Gradle.
+- **JDK 17 or newer.** AGP 9 requires JDK 17+ and Gradle 9.6.1 runs on JDK
+  17–26, so Android Studio's bundled JBR (`/opt/android-studio/jbr`, currently
+  JBR 25) is fine, as is `~/.jdks/jbr-21.0.11`. CI uses JDK 21. Do not pin
+  `org.gradle.java.home` in the repository: F-Droid and CI use different JDK
+  paths. Android Studio's Gradle JVM comes from `.idea/gradle.xml`
+  (`#GRADLE_LOCAL_JAVA_HOME`) plus `java.home` in `.gradle/config.properties`.
+  Historical note: AGP 8.7.3 rejected JDK 25 with a bare
+  `* What went wrong: 25.0.2` error, which is why the JDK used to be pinned to
+  21. The AGP 9 upgrade removed that constraint.
+- **Android SDK**: platform `android-35`, build-tools `36.0.0` (AGP 9 minimum),
+  platform-tools. Export `ANDROID_HOME=~/.Android` (or set `sdk.dir` in
+  `local.properties`) before running Gradle. The SDK root is `~/.Android` — a
+  single root holding
+  `platforms/`, `build-tools/`, `platform-tools/`, and `emulator/`. Keep it that
+  way: a split layout (build packages in one root, `platform-tools` in another)
+  builds fine but fails `:app:installDebug` with
+  `Cannot run program ".../platform-tools/adb"`. Put the SDK's `platform-tools`
+  ahead of `/bin` on `PATH` so its `adb` beats a distro `android-tools` build;
+  mismatched versions restart the adb server underneath running tools.
 - `namespace` / `applicationId` = **`live.pageless.mobile`**; `minSdk 26`,
   `compileSdk`/`targetSdk 35`.
+- **AGP 9 uses built-in Kotlin**: `org.jetbrains.kotlin.android` is deliberately
+  **not** applied — it is incompatible with AGP 9's new DSL, and AGP compiles
+  Kotlin itself. Do not re-add it. For the same reason there is no
+  `android { kotlinOptions { … } }` block; the JVM target lives in a top-level
+  `kotlin { compilerOptions { jvmTarget … } }` block in `app/build.gradle.kts`.
+  The legacy variant API (`applicationVariants` and friends) is gone; use
+  `androidComponents` if build logic ever needs per-variant hooks.
 - Common commands (from repo root):
 
   ```sh
   export JAVA_HOME=/opt/android-studio/jbr
-  export ANDROID_HOME=~/.Android/Sdk
+  export ANDROID_HOME=~/.Android
   ./gradlew :app:installDebug      # build + install on the connected device
   ./gradlew testDebugUnitTest      # run the pure-core unit tests
   ./gradlew assembleDebug          # build a debug APK
@@ -102,9 +121,12 @@ on the JVM.
   Library pull-to-refresh, and during active playback for progress. If server API
   changes add migrations in `../pageless`, remember to run `mix ecto.migrate`
   before testing against a dev server.
-- `PagelessDatabase` currently uses `fallbackToDestructiveMigration()` — schema
-  bumps **wipe local data** (acceptable for a dev-stage app; can orphan
-  downloaded files). Bump `version` when changing entities.
+- `PagelessDatabase` currently uses
+  `fallbackToDestructiveMigration(dropAllTables = true)` — schema bumps **wipe
+  local data** (acceptable for a dev-stage app; can orphan downloaded files).
+  Bump `version` when changing entities. `dropAllTables = true` is Room's
+  recommended value and clears tables that leave the schema, so renamed or
+  removed entities cannot strand rows.
 - Networking is bearer-token auth via OkHttp interceptors; the same authed
   `OkHttpClient` is reused for API calls, Coil image loading
   (`ImageLoaderFactory` in `PagelessApp`), and ExoPlayer streaming so covers and

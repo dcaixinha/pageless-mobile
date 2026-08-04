@@ -41,20 +41,23 @@ The app is in active early development, but the core listening flow is working:
 
 ## Requirements
 
-- **JDK 21**. Set `JAVA_HOME=/opt/android-studio/jbr` to use Android Studio's
-  bundled JBR, or point it to another JDK 21 installation.
+- **JDK 17 or newer** (Gradle 9.6.1 runs on JDK 17–26). Android Studio's
+  bundled JBR works. Point `JAVA_HOME` at it or at any other JDK 17+.
 - **Android SDK** with:
   - Platform `android-35`
-  - Build Tools `34.0.0`
+  - Build Tools `36.0.0` (the minimum for AGP 9)
   - Platform Tools (`adb`)
-- Set `ANDROID_HOME=~/.Android/Sdk` or create a git-ignored `local.properties`
-  with `sdk.dir=/home/you/Android/Sdk`.
+- Set `ANDROID_HOME` to the SDK root, or create a git-ignored `local.properties`
+  with `sdk.dir=/home/you/Android/Sdk`. Keep every package under **one** root:
+  if `platform-tools` lives in a different root than `platforms`/`build-tools`,
+  `assembleDebug` still works but `:app:installDebug` fails with
+  `Cannot run program ".../platform-tools/adb"`.
 
 Install SDK packages headlessly with Android command-line tools:
 
 ```sh
 sdkmanager --licenses
-sdkmanager "platform-tools" "platforms;android-35" "build-tools;34.0.0"
+sdkmanager "platform-tools" "platforms;android-35" "build-tools;36.0.0"
 ```
 
 ## Build, Test, Install
@@ -62,8 +65,8 @@ sdkmanager "platform-tools" "platforms;android-35" "build-tools;34.0.0"
 From the repository root:
 
 ```sh
-export JAVA_HOME=/opt/android-studio/jbr
-export ANDROID_HOME=~/.Android/Sdk
+export JAVA_HOME=/path/to/jdk-17-or-newer
+export ANDROID_HOME=/path/to/android-sdk
 ./gradlew testDebugUnitTest      # run JVM unit tests
 ./gradlew assembleDebug          # build a debug APK
 ./gradlew :app:installDebug      # install on a connected device/emulator
@@ -181,9 +184,10 @@ app/src/main/java/live/pageless/mobile/
 
 ## Useful Notes
 
-- `PagelessDatabase` currently uses `fallbackToDestructiveMigration()`. Room
-  schema bumps wipe local data, which is acceptable during this dev stage but can
-  orphan downloaded files.
+- `PagelessDatabase` currently uses
+  `fallbackToDestructiveMigration(dropAllTables = true)`. Room schema bumps wipe
+  local data, which is acceptable during this dev stage but can orphan
+  downloaded files.
 - The app-wide authenticated `OkHttpClient` is reused for Retrofit, Coil cover
   loading, ExoPlayer streaming, and download/cover caching so protected assets
   carry the bearer token.

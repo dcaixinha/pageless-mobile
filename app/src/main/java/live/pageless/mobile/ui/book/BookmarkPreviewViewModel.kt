@@ -46,7 +46,7 @@ data class BookmarkPreviewState(
 class BookmarkPreviewViewModel
     @Inject
     constructor(
-        @ApplicationContext private val context: Context,
+        @param:ApplicationContext private val context: Context,
         private val downloadRepository: DownloadRepository,
         private val playerSettingsStore: PlayerSettingsStore,
         private val sessionStore: SessionStore,

@@ -34,7 +34,7 @@ enum class ThemeMode { SYSTEM, DARK, LIGHT }
 class PlayerSettingsStore
     @Inject
     constructor(
-        @ApplicationContext private val context: Context,
+        @param:ApplicationContext private val context: Context,
     ) {
         private object Keys {
             val USE_CHAPTER_TRACK = booleanPreferencesKey("use_chapter_track")

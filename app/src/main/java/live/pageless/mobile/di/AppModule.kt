@@ -96,7 +96,10 @@ object AppModule {
             .databaseBuilder(context, PagelessDatabase::class.java, "pageless.db")
             // Local cache is re-synced from the server, so a destructive
             // migration on schema changes is acceptable and simplest.
-            .fallbackToDestructiveMigration()
+            // dropAllTables = true is Room's recommended value: it also clears
+            // tables that stop being part of the schema, so renamed or removed
+            // entities cannot leave obsolete rows behind.
+            .fallbackToDestructiveMigration(dropAllTables = true)
             .build()
 
     @Provides fun provideBookDao(db: PagelessDatabase): BookDao = db.bookDao()
