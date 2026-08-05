@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Legacy (API 26-30) counterpart to @xml/data_extraction_rules.
+
+  On these API levels android:allowBackup="false" already disables backup
+  completely, so these rules are belt-and-braces: they keep the "nothing is
+  backed up" intent explicit for the pre-Android-12 mechanism, and they mean the
+  session bearer token stays excluded even if allowBackup were ever flipped back
+  to true by accident.
+
+  From API 31 onwards this file is ignored in favour of
+  @xml/data_extraction_rules, which is the only mechanism that also covers
+  device-to-device transfers. See docs/privacy/data-safety.md (finding F1).
+-->
+<full-backup-content>
+    <exclude domain="root" path="." />
+    <exclude domain="file" path="." />
+    <exclude domain="database" path="." />
+    <exclude domain="sharedpref" path="." />
+    <exclude domain="external" path="." />
+    <exclude domain="device_root" path="." />
+    <exclude domain="device_file" path="." />
+    <exclude domain="device_database" path="." />
+    <exclude domain="device_sharedpref" path="." />
+</full-backup-content>

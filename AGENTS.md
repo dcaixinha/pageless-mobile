@@ -136,11 +136,17 @@ on the JVM.
   a book downloaded for offline use unless its cover was cached successfully.
   UI cover models should prefer the Room-tracked local cover path and only fall
   back to the authenticated server URL when no valid local cover exists.
-- **Android backup is deliberately off** (`android:allowBackup="false"`). The
-  `session` DataStore holds a plaintext bearer token, and Auto Backup would copy
-  it to Google's cloud and into device-to-device transfers. Do not re-enable it
-  without excluding `datastore/session.preferences_pb`; everything else re-syncs
-  from the server on login anyway. Rationale in `docs/privacy/data-safety.md`.
+- **Backup and transfer are deliberately off**, and this needs **three**
+  manifest pieces, not one: `android:allowBackup="false"` (covers API 26–30),
+  `android:dataExtractionRules="@xml/data_extraction_rules"` (API 31+), and
+  `android:fullBackupContent="@xml/backup_rules"` (legacy counterpart, keeps Lint
+  and intent aligned). `allowBackup="false"` alone is **not** sufficient from API
+  31: per Google's docs it disables cloud backup but on some OEM devices does
+  *not* disable device-to-device transfers, and legacy `fullBackupContent` rules
+  never affect D2D. Both XML files exclude every domain from both channels. The
+  reason is the plaintext bearer token in the `session` DataStore; everything
+  else re-syncs from the server on login. Rationale in
+  `docs/privacy/data-safety.md` (finding F1).
 - Debug builds allow cleartext HTTP (LAN convenience,
   `app/src/debug/res/xml/network_security_config.xml`); **release is HTTPS-only**
   (`app/src/main/res/xml/...`). Don't leak the debug convenience into release.

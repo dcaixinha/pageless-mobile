@@ -11,17 +11,23 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!--
-      Backup is deliberately disabled (android:allowBackup="false"). The
-      "session" DataStore holds a long-lived bearer token in plaintext, and
-      Android Auto Backup would copy it to Google's cloud and into
-      device-to-device transfers. Little is lost by opting out: the library,
-      progress, bookmarks and listening history all re-sync from the user's
-      server on the next login, and downloaded .m4b files would exceed the Auto
-      Backup quota anyway. See docs/privacy/data-safety.md (finding F1).
+      Backup and transfer are deliberately disabled. The "session" DataStore
+      holds a long-lived bearer token in plaintext, and Auto Backup would copy it
+      to Google's cloud and into device-to-device transfers. Little is lost by
+      opting out: the library, progress, bookmarks and listening history all
+      re-sync from the user's server on the next login, and downloaded .m4b files
+      would exceed the Auto Backup quota anyway.
+
+      Both attributes are required. allowBackup="false" covers API 26-30, but
+      from API 31 it does not reliably disable device-to-device transfers, so
+      @xml/data_extraction_rules excludes every domain from both cloud backup and
+      D2D. See docs/privacy/data-safety.md (finding F1).
     -->
     <application
         android:name=".PagelessApp"
         android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
