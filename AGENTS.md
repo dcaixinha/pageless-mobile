@@ -20,7 +20,7 @@ docs; this file captures the conventions and gotchas an agent needs.
   Historical note: AGP 8.7.3 rejected JDK 25 with a bare
   `* What went wrong: 25.0.2` error, which is why the JDK used to be pinned to
   21. The AGP 9 upgrade removed that constraint.
-- **Android SDK**: platform `android-35`, build-tools `36.0.0` (AGP 9 minimum),
+- **Android SDK**: platform `android-36`, build-tools `36.0.0` (AGP 9 minimum),
   platform-tools. Export `ANDROID_HOME=~/.Android` (or set `sdk.dir` in
   `local.properties`) before running Gradle. The SDK root is `~/.Android` — a
   single root holding
@@ -31,7 +31,7 @@ docs; this file captures the conventions and gotchas an agent needs.
   ahead of `/bin` on `PATH` so its `adb` beats a distro `android-tools` build;
   mismatched versions restart the adb server underneath running tools.
 - `namespace` / `applicationId` = **`live.pageless.mobile`**; `minSdk 26`,
-  `compileSdk`/`targetSdk 35`.
+  `compileSdk`/`targetSdk 36`.
 - **AGP 9 uses built-in Kotlin**: `org.jetbrains.kotlin.android` is deliberately
   **not** applied — it is incompatible with AGP 9's new DSL, and AGP compiles
   Kotlin itself. Do not re-add it. For the same reason there is no

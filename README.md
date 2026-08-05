@@ -44,7 +44,7 @@ The app is in active early development, but the core listening flow is working:
 - **JDK 17 or newer** (Gradle 9.6.1 runs on JDK 17–26). Android Studio's
   bundled JBR works. Point `JAVA_HOME` at it or at any other JDK 17+.
 - **Android SDK** with:
-  - Platform `android-35`
+  - Platform `android-36`
   - Build Tools `36.0.0` (the minimum for AGP 9)
   - Platform Tools (`adb`)
 - Set `ANDROID_HOME` to the SDK root, or create a git-ignored `local.properties`
@@ -57,7 +57,7 @@ Install SDK packages headlessly with Android command-line tools:
 
 ```sh
 sdkmanager --licenses
-sdkmanager "platform-tools" "platforms;android-35" "build-tools;36.0.0"
+sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
 ```
 
 ## Build, Test, Install

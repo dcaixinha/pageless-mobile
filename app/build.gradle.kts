@@ -33,12 +33,12 @@ val appVersionCode = versionProp("VERSION_CODE").toInt()
 
 android {
     namespace = "live.pageless.mobile"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "live.pageless.mobile"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = appVersionCode
         versionName = appVersionName
 
