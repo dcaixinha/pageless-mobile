@@ -1,24 +1,17 @@
-Pageless is the native Android client for Pageless, a self-hosted audiobook
-server. It is offline-first: browse your library, download books for offline
-listening, play without a connection, and sync your progress back to your own
-server over its token-authenticated JSON API.
+Pageless is the native Android client for Pageless, a self-hosted audiobook server. It is offline-first: browse your library, download books for offline listening, play without a connection, and sync your progress back to your own server over its token-authenticated JSON API.
 
-You must run your own Pageless server; the app connects to a server URL that you
-configure on the login screen. No account or data is sent to any third party.
+You must run your own Pageless server; the app connects to a server URL that you configure on the login screen. No account or data is sent to any third party.
 
 Server source and setup instructions:
 https://github.com/dcaixinha/pageless
 
 Features:
 
-* Browse your library, series, collections, and playlists.
-* Open book details with metadata, chapters, bookmarks, and listening progress.
-* Download books (audio and covers) for fully offline playback.
-* Media3-powered background playback with notification and lock-screen controls,
-  a mini-player, and a full Now Playing screen.
-* Playback progress, bookmarks, and listening history sync back to your server,
-  merged last-write-wins so multiple devices stay in agreement.
-* Light, dark, and system themes.
+• Browse your library, series, collections, and playlists.
+• Open book details with metadata, chapters, bookmarks, and listening progress.
+• Download books (audio and covers) for fully offline playback.
+• Media3-powered background playback with notification and lock-screen controls, a mini-player, and a full Now Playing screen.
+• Playback progress, bookmarks, and listening history sync back to your server, merged last-write-wins so multiple devices stay in agreement.
+• Light, dark, and system themes.
 
-Pageless is free software, released under the GNU General Public License v3.0 or
-later.
+Pageless is open-source software, released under the GNU General Public License v3.0 or later.
