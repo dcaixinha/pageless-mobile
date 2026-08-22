@@ -1,0 +1,7 @@
+Targets Android 16 (API 36).
+
+Android backup and device-to-device transfer are now disabled, so your session token never leaves the device.
+
+Adds a privacy policy link in Settings and on the sign-in screen.
+
+Under the hood: upgraded to AGP 9, Gradle 9.6.1 and Kotlin 2.3.
