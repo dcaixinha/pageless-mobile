@@ -74,6 +74,12 @@ export ANDROID_HOME=/path/to/android-sdk
 
 The debug APK is written to `app/build/outputs/apk/debug/app-debug.apk`.
 
+`./gradlew assembleRelease` produces an **unsigned** release APK, which is what
+CI and F-Droid build (F-Droid signs with its own key). If a Play upload key is
+configured locally, release builds are signed instead and `./gradlew bundleRelease`
+produces the `.aab` for Google Play — see
+[`docs/release/play-signing.md`](docs/release/play-signing.md).
+
 ## Connecting To A Server
 
 The Pageless server lives in the sibling repository `../pageless`.

@@ -59,6 +59,13 @@ docs; this file captures the conventions and gotchas an agent needs.
   notes input is the user-facing changelog and is limited to 500 characters.
   ktlint config lives in `.editorconfig` (Compose `function-naming` is disabled
   there).
+- **Release signing is conditional and must stay that way.** `assembleRelease`
+  produces an *unsigned* APK unless a Play upload key is configured through the
+  git-ignored `keystore.properties` or the `PAGELESS_UPLOAD_*` environment
+  variables; `release.yml` and F-Droid both depend on the unsigned path. When a
+  key is present, `bundleRelease` emits the signed `.aab` for Play. Never commit
+  key material, and never add signing secrets to CI without a deliberate
+  decision. Details in `docs/release/play-signing.md`.
 - Run Gradle commands sequentially. Parallel Gradle invocations have corrupted
   KSP incremental caches in this repo (`app/build/kspCaches/...`); if that
   happens, run `./gradlew --stop` and `./gradlew clean` before rebuilding.
