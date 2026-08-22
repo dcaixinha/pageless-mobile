@@ -9,7 +9,14 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Play upload signing. Never commit key material or passwords; see
+# docs/release/play-signing.md.
+keystore.properties
 *.keystore
+*.jks
+*.p12
+*.pepk
 !debug.keystore
 
 # Beads / Dolt files (added by bd init)

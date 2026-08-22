@@ -31,9 +31,62 @@ fun versionProp(
 val appVersionName = versionProp("VERSION_NAME")
 val appVersionCode = versionProp("VERSION_CODE").toInt()
 
+// Play upload signing. Key material lives only on the maintainer's machine: a
+// git-ignored keystore.properties at the repo root, or the equivalent
+// PAGELESS_UPLOAD_* environment variables.
+//
+// When no keystore is configured the release build stays *unsigned*, which is
+// deliberate and load-bearing: .github/workflows/release.yml and F-Droid both run
+// `assembleRelease` on machines that have no upload key, and F-Droid signs with
+// its own key. Only `bundleRelease` for the Play upload needs signing.
+val keystoreProperties =
+    Properties().apply {
+        val file = rootProject.file("keystore.properties")
+        if (file.exists()) file.inputStream().use(::load)
+    }
+
+fun signingProp(
+    property: String,
+    environmentVariable: String,
+): String? =
+    (keystoreProperties.getProperty(property) ?: System.getenv(environmentVariable))
+        ?.takeIf { it.isNotBlank() }
+
+val uploadStoreFile =
+    signingProp("storeFile", "PAGELESS_UPLOAD_STORE_FILE")?.let { path ->
+        rootProject.file(path)
+    }
+
+val hasUploadKey = uploadStoreFile?.isFile == true
+
+if (uploadStoreFile != null && !hasUploadKey) {
+    logger.warn(
+        "Pageless: upload keystore configured but not found at ${uploadStoreFile.absolutePath}; " +
+            "release output will be UNSIGNED. See docs/release/play-signing.md.",
+    )
+}
+
 android {
     namespace = "live.pageless.mobile"
     compileSdk = 36
+
+    // Null when no upload key is configured, which leaves the release build
+    // unsigned exactly as before.
+    val uploadSigningConfig =
+        if (hasUploadKey) {
+            signingConfigs.create("upload") {
+                storeFile = uploadStoreFile
+                storePassword = signingProp("storePassword", "PAGELESS_UPLOAD_STORE_PASSWORD")
+                keyAlias = signingProp("keyAlias", "PAGELESS_UPLOAD_KEY_ALIAS")
+                keyPassword = signingProp("keyPassword", "PAGELESS_UPLOAD_KEY_PASSWORD")
+                // Play requires the classic JAR signature on uploaded bundles;
+                // v2/v3 APK signing is applied by Play when it re-signs for devices.
+                enableV1Signing = true
+                enableV2Signing = true
+            }
+        } else {
+            null
+        }
 
     defaultConfig {
         applicationId = "live.pageless.mobile"
@@ -59,6 +112,10 @@ android {
             // No baked-in default: users enter their own HTTPS server. Release
             // builds forbid cleartext (see app/src/main/res/xml/...).
             buildConfigField("String", "DEFAULT_SERVER_URL", "\"https://\"")
+
+            // Signed with the Play upload key when one is configured locally,
+            // otherwise left unsigned for CI and F-Droid.
+            signingConfig = uploadSigningConfig
 
             isMinifyEnabled = false
             proguardFiles(
