@@ -48,6 +48,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import live.pageless.mobile.data.local.ThemeMode
 import live.pageless.mobile.ui.components.ConnectionStatusIcon
+import live.pageless.mobile.ui.components.PrivacyPolicyRow
 
 private val JUMP_OPTIONS = listOf(5, 10, 15, 20, 30, 45, 60)
 private val BOOKMARK_CONTEXT_OPTIONS = listOf(0, 5, 10, 15, 20, 30, 45, 60)
@@ -189,6 +190,16 @@ fun SettingsScreen(
                 options = BOOKMARK_CONTEXT_OPTIONS,
                 onSelect = viewModel::setBookmarkContext,
             )
+            HorizontalDivider()
+
+            Text(
+                "About",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 4.dp),
+            )
+
+            PrivacyPolicyRow()
             HorizontalDivider()
         }
     }

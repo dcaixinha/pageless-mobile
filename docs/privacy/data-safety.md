@@ -255,8 +255,9 @@ never collected, so they fall outside the question's scope.
 
 ## 9. Consistency requirements for downstream issues
 
-- **pm-a6l.7 (privacy policy)** — drafted at `docs/privacy/privacy-policy.md`,
-  to be published at <https://demo.pageless.live/privacy>. It is deliberately
+- **pm-a6l.7 (privacy policy)** — source of truth at
+  `docs/privacy/privacy-policy.md`, published at <https://pageless.live/privacy>.
+  It is deliberately
   *more* detailed than the form: it discloses the password and session token even
   though neither is declared as a Data safety type (decisions **D2**/**D3**),
   states plainly that signing out does **not** remove downloaded audio (**F2**),

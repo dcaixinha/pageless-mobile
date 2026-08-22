@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import live.pageless.mobile.ui.components.PrivacyPolicyLink
 
 @Composable
 fun LoginScreen(
@@ -80,5 +81,7 @@ fun LoginScreen(
                 Text("Sign in")
             }
         }
+
+        PrivacyPolicyLink(modifier = Modifier.align(Alignment.CenterHorizontally))
     }
 }

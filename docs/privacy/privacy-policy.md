@@ -2,9 +2,6 @@
 
 **Last updated: 4 August 2026**
 
-To be published at **<https://demo.pageless.live/privacy>** — the URL used in the
-Google Play listing and linked from inside the app.
-
 This policy covers the **Pageless Mobile** Android app (package
 `live.pageless.mobile`), the open-source client for Pageless, a self-hosted
 audiobook server. It does not cover any particular Pageless *server*; see

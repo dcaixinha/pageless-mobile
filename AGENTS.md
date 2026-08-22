@@ -143,6 +143,14 @@ on the JVM.
   a book downloaded for offline use unless its cover was cached successfully.
   UI cover models should prefer the Room-tracked local cover path and only fall
   back to the authenticated server URL when no valid local cover exists.
+- The **privacy policy has one source of truth**:
+  `docs/privacy/privacy-policy.md`. It is rendered to the published page at
+  <https://pageless.live/privacy> by a script in the maintainer's private VPS
+  dotfiles, and the app links to that URL through `PRIVACY_POLICY_URL` in
+  `ui/components/PrivacyPolicy.kt`. Never bundle policy text into the app or
+  hand-edit the published HTML — Google Play, the store listing and the in-app
+  links all point at that one page, and a second copy will drift. Changing the
+  URL requires an app update, so treat it as stable.
 - **Backup and transfer are deliberately off**, and this needs **three**
   manifest pieces, not one: `android:allowBackup="false"` (covers API 26–30),
   `android:dataExtractionRules="@xml/data_extraction_rules"` (API 31+), and
