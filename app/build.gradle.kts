@@ -107,6 +107,17 @@ android {
     defaultConfig {
         applicationId = "live.pageless.mobile"
         minSdk = 26
+        // Raising this to 37 is not a routine bump: Android 17 enforces Local
+        // Network Protections for apps targeting SDK 37+, and every request to
+        // a LAN server — which is the normal Pageless deployment — is then
+        // blocked until the user grants ACCESS_LOCAL_NETWORK at runtime.
+        // Denying it looks like total app failure, so the permission flow has
+        // to ship in the same change. Implement pm-a6l.20 first.
+        //
+        // Do not pre-declare ACCESS_LOCAL_NETWORK to get ahead of it. Google is
+        // explicit that apps targeting 36 or lower must not add it to the
+        // manifest or request it; INTERNET already grants local access
+        // implicitly at this target level.
         targetSdk = 36
         versionCode = appVersionCode
         versionName = appVersionName

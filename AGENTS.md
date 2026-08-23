@@ -73,6 +73,15 @@ docs; this file captures the conventions and gotchas an agent needs.
   charges a 12-tester/14-day gate plus an annual `targetSdk` and policy
   re-attestation treadmill that F-Droid does not). Releases reach F-Droid
   automatically from the release tag; see `fdroid/README.md`.
+- **`targetSdk 37` is gated on Local Network Protections.** Android 17 enforces
+  them for apps targeting SDK 37+: reaching a LAN address then requires the
+  runtime `ACCESS_LOCAL_NETWORK` permission, and the usual Pageless server is a
+  LAN address. A denial blocks login, library, covers, downloads, streaming and
+  sync at once, which reads as the app being broken. So the permission flow must
+  land in the same change as the bump — see `pm-a6l.20`. Until then, do **not**
+  declare or request `ACCESS_LOCAL_NETWORK`: Google's guidance is that apps
+  targeting 36 or lower must not, because `INTERNET` already grants local access
+  implicitly.
 - Run Gradle commands sequentially. Parallel Gradle invocations have corrupted
   KSP incremental caches in this repo (`app/build/kspCaches/...`); if that
   happens, run `./gradlew --stop` and `./gradlew clean` before rebuilding.
