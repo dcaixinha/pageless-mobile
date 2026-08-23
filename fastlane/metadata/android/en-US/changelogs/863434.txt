@@ -1,0 +1,5 @@
+Sign in has a new look, and a "Use demo server" button that fills in the public demo instance, so you can try Pageless without running a server first.
+
+Servers with a private or self-signed certificate now work, as long as the certificate authority is installed on your device.
+
+Signing out now clears downloaded audiobooks and cached covers, stops playback and cancels downloads in progress, instead of leaving them behind.
