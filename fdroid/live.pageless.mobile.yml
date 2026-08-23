@@ -1,17 +1,22 @@
-# F-Droid metadata for the OFFICIAL repo.
+# F-Droid metadata for the OFFICIAL repo — ALREADY MERGED, REFERENCE COPY ONLY.
 #
-# This file is NOT read from this repository — it is a ready-to-submit copy of
-# the recipe that must live in fdroiddata as:
+# This file is NOT read from this repository, and it is no longer the source of
+# truth. The authoritative recipe lives in fdroiddata as:
 #
 #     metadata/live.pageless.mobile.yml
 #
-# To publish on the official F-Droid repo:
-#   1. Fork https://gitlab.com/fdroid/fdroiddata
-#   2. Copy this file to metadata/live.pageless.mobile.yml
-#   3. Fill in the first release's version and full commit SHA. Later releases
-#      are detected automatically from the static version.properties in each tag.
-#   4. Run `fdroid lint live.pageless.mobile` and `fdroid build live.pageless.mobile`
-#   5. Open a merge request
+# It was merged on 2026-08-10 and F-Droid now appends a `Builds:` entry and
+# bumps CurrentVersion/CurrentVersionCode itself on every release tag. This copy
+# deliberately keeps only the first build entry: mirroring the upstream list
+# here would be a drift hazard for zero benefit. Read upstream for current
+# state:
+#
+#     https://gitlab.com/fdroid/fdroiddata/-/blob/master/metadata/live.pageless.mobile.yml
+#
+# It is kept as documentation of the recipe's shape, and because a rewrite would
+# be needed if the app ever had to be resubmitted. If you do change it upstream,
+# validate with `fdroid lint live.pageless.mobile` and
+# `fdroid build live.pageless.mobile` before opening a merge request.
 #
 # See https://f-droid.org/docs/Building_Applications and
 # https://f-droid.org/docs/Reference for the full metadata reference.

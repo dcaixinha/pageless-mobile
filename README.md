@@ -96,9 +96,16 @@ PHX_HOST_IP=0.0.0.0 mix phx.server
 Debug builds allow cleartext HTTP for LAN development via
 `app/src/debug/res/xml/network_security_config.xml`.
 
-**Release builds** forbid cleartext HTTP. Users must enter an HTTPS server URL
-with a valid certificate. Release defaults to `https://` and uses
+**Release builds** forbid cleartext HTTP. Users must enter an HTTPS server URL.
+Release defaults to `https://` and uses
 `app/src/main/res/xml/network_security_config.xml`.
+
+The certificate may be issued by a publicly trusted CA **or by a private CA the
+user has installed on the device** (Android Settings → Security → Encryption &
+credentials → Install a certificate → CA certificate). That covers internal CAs
+and self-signed certificates, so a LAN-only server does not need a public
+certificate. Certificates that are neither system-trusted nor installed by the
+user are rejected, as is cleartext HTTP.
 
 ## Server Compatibility
 

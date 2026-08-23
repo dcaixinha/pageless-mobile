@@ -15,6 +15,18 @@ plugins {
 // The release workflow commits these values before tagging so F-Droid can read and
 // reproduce them from source. Gradle properties and environment variables remain
 // available as explicit local/CI overrides.
+//
+// F-Droid's update check is a scraper that never executes build logic, and its
+// documentation warns against version numbers produced by function calls —
+// which `versionProp(...)` below is. Detection therefore does not parse this
+// file at all: the fdroiddata recipe carries
+//
+//     UpdateCheckData: version.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=(.+)
+//
+// so it reads the literals out of version.properties in each release tag. Keep
+// version.properties a flat, greppable key=value file. Computing either value
+// here, or dropping that recipe line, silently stops F-Droid from ever seeing
+// a new release — and F-Droid is the only distribution channel.
 val versionProperties =
     Properties().apply {
         rootProject.file("version.properties").inputStream().use(::load)

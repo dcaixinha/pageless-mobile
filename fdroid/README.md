@@ -35,11 +35,34 @@ same static values from the tagged source.
 
 7. Open a merge request against fdroiddata.
 
-After the initial recipe is merged, `UpdateCheckMode: Tags` reads the static
-values from `version.properties` in each release tag and `AutoUpdateMode:
-Version` creates future build entries automatically. Manual fdroiddata merge
-requests are only needed if detection or a build fails, or the build recipe
-changes.
+After the initial recipe is merged, `UpdateCheckMode: Tags` finds each new
+release tag and `AutoUpdateMode: Version` appends the build entry
+automatically. Manual fdroiddata merge requests are only needed if detection or
+a build fails, or the build recipe changes.
+
+**`UpdateCheckData` is load-bearing — do not remove it.**
+
+```yaml
+UpdateCheckData: version.properties|VERSION_CODE=(\d+)|.|VERSION_NAME=(.+)
+```
+
+F-Droid's update check never executes build logic; it scrapes. Its FAQ warns
+against versions computed at build time, and `app/build.gradle.kts` derives
+both values through a `versionProp(...)` call that the scraper cannot evaluate.
+That line sidesteps the problem by reading the literals straight out of
+`version.properties` in the tagged commit. Without it, detection would have to
+parse the Gradle file and would fail — silently, with no new versions ever
+appearing. Keep `version.properties` a flat `KEY=value` file for the same
+reason.
+
+Verified working on 2026-08-23: tag `20260822130925-a79739e9d` was detected and
+its build entry added upstream automatically about 22 hours after the push.
+Building and publishing the APK takes longer — F-Droid's build cycle runs once
+a day and publication typically takes a few days. Check with:
+
+```sh
+curl -s https://f-droid.org/api/v1/packages/live.pageless.mobile
+```
 
 Store listing text and screenshots come from `fastlane/metadata/android/en-US/`
 in this repo, which both F-Droid and Play read.
