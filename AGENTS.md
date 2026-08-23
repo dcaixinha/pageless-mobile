@@ -60,12 +60,19 @@ docs; this file captures the conventions and gotchas an agent needs.
   ktlint config lives in `.editorconfig` (Compose `function-naming` is disabled
   there).
 - **Release signing is conditional and must stay that way.** `assembleRelease`
-  produces an *unsigned* APK unless a Play upload key is configured through the
+  produces an *unsigned* APK unless a signing key is configured through a
   git-ignored `keystore.properties` or the `PAGELESS_UPLOAD_*` environment
-  variables; `release.yml` and F-Droid both depend on the unsigned path. When a
-  key is present, `bundleRelease` emits the signed `.aab` for Play. Never commit
-  key material, and never add signing secrets to CI without a deliberate
-  decision. Details in `docs/release/play-signing.md`.
+  variables — and nothing configures one. That unsigned default is load-bearing:
+  `release.yml` and F-Droid both build on machines with no key, and **F-Droid
+  signs with its own key**, so making signing unconditional would break the only
+  distribution channel. Never commit key material, and never add signing secrets
+  to CI without a deliberate decision.
+- **Distribution is F-Droid only.** Google Play was prepared in detail and then
+  abandoned (see the closed `pm-a6l` epic for the full reasoning: an app that
+  needs a self-hosted server has little to gain from Play's audience, and Play
+  charges a 12-tester/14-day gate plus an annual `targetSdk` and policy
+  re-attestation treadmill that F-Droid does not). Releases reach F-Droid
+  automatically from the release tag; see `fdroid/README.md`.
 - Run Gradle commands sequentially. Parallel Gradle invocations have corrupted
   KSP incremental caches in this repo (`app/build/kspCaches/...`); if that
   happens, run `./gradlew --stop` and `./gradlew clean` before rebuilding.

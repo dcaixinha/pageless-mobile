@@ -31,14 +31,18 @@ fun versionProp(
 val appVersionName = versionProp("VERSION_NAME")
 val appVersionCode = versionProp("VERSION_CODE").toInt()
 
-// Play upload signing. Key material lives only on the maintainer's machine: a
-// git-ignored keystore.properties at the repo root, or the equivalent
-// PAGELESS_UPLOAD_* environment variables.
+// Optional release signing. Key material, if any, lives only on the
+// maintainer's machine: a git-ignored keystore.properties at the repo root, or
+// the equivalent PAGELESS_UPLOAD_* environment variables. Nothing in this
+// repository configures either, so release builds are unsigned by default.
 //
-// When no keystore is configured the release build stays *unsigned*, which is
-// deliberate and load-bearing: .github/workflows/release.yml and F-Droid both run
-// `assembleRelease` on machines that have no upload key, and F-Droid signs with
-// its own key. Only `bundleRelease` for the Play upload needs signing.
+// That default is load-bearing rather than incidental. Distribution is F-Droid
+// only (see AGENTS.md); .github/workflows/release.yml and F-Droid both run
+// `assembleRelease` on machines with no key, and F-Droid signs the result with
+// its own key. Making signing unconditional would break the only channel.
+//
+// Kept after Google Play was abandoned (closed beads epic pm-a6l) because it is
+// verified, inert without a key, and cheap to reinstate.
 val keystoreProperties =
     Properties().apply {
         val file = rootProject.file("keystore.properties")
@@ -61,8 +65,8 @@ val hasUploadKey = uploadStoreFile?.isFile == true
 
 if (uploadStoreFile != null && !hasUploadKey) {
     logger.warn(
-        "Pageless: upload keystore configured but not found at ${uploadStoreFile.absolutePath}; " +
-            "release output will be UNSIGNED. See docs/release/play-signing.md.",
+        "Pageless: signing keystore configured but not found at ${uploadStoreFile.absolutePath}; " +
+            "release output will be UNSIGNED, which is the normal F-Droid path.",
     )
 }
 
