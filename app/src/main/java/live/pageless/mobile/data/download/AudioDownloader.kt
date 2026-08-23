@@ -52,7 +52,7 @@ class AudioDownloader
         private val sessionStore: SessionStore,
     ) {
         private val downloadsDir: File
-            get() = File(context.filesDir, "audiobooks").apply { mkdirs() }
+            get() = File(context.filesDir, AUDIO_DIR_NAME).apply { mkdirs() }
 
         fun fileFor(bookId: String): File = File(downloadsDir, "$bookId.m4b")
 
@@ -101,4 +101,14 @@ class AudioDownloader
         fun delete(bookId: String) {
             fileFor(bookId).delete()
         }
+
+        /**
+         * Deletes every downloaded book, including partial downloads.
+         *
+         * For account teardown, where the Room rows naming these files are being
+         * cleared in the same operation. Unlike [delete] this takes no lock and
+         * touches no database, so it is safe to call from inside an existing
+         * [live.pageless.mobile.data.repository.CacheCoordinator] block.
+         */
+        fun deleteAllFiles(): Int = clearDirectoryContents(downloadsDir)
     }

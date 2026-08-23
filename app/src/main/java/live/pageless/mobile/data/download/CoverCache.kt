@@ -28,7 +28,7 @@ class CoverCache
         private val cacheCoordinator: CacheCoordinator,
     ) {
         private val coversDir: File
-            get() = File(context.filesDir, "covers").apply { mkdirs() }
+            get() = File(context.filesDir, COVERS_DIR_NAME).apply { mkdirs() }
 
         suspend fun cacheForOffline(book: BookEntity): String? =
             withContext(Dispatchers.IO) {
@@ -85,6 +85,18 @@ class CoverCache
                     }
                 }
             }
+
+        /**
+         * Deletes every cached cover file.
+         *
+         * For account teardown, where the Room rows holding `coverLocalPath` are
+         * being cleared in the same operation. Unlike [delete] this acquires no
+         * [live.pageless.mobile.data.repository.CacheCoordinator] lock and writes
+         * nothing to the database — [CacheCoordinator]'s mutex is not reentrant,
+         * so calling [delete] from inside an existing exclusive block would
+         * deadlock.
+         */
+        fun deleteAllFiles(): Int = clearDirectoryContents(coversDir)
 
         private fun clearBookCoverFiles(
             bookId: String,

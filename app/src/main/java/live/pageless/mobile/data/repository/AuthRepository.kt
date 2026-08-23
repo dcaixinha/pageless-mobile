@@ -5,6 +5,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
+import live.pageless.mobile.data.download.AudioDownloader
+import live.pageless.mobile.data.download.CoverCache
 import live.pageless.mobile.data.local.PagelessDatabase
 import live.pageless.mobile.data.local.SessionStore
 import live.pageless.mobile.data.remote.LoginRequest
@@ -24,6 +26,8 @@ class AuthRepository
         private val sessionStore: SessionStore,
         private val syncScheduler: SyncScheduler,
         private val connectionStatusRepository: ConnectionStatusRepository,
+        private val audioDownloader: AudioDownloader,
+        private val coverCache: CoverCache,
     ) {
         val token: Flow<String?> = sessionStore.token
         val serverUrl: Flow<String> = sessionStore.serverUrl
@@ -50,7 +54,7 @@ class AuthRepository
                 runCatching {
                     cacheCoordinator.exclusive {
                         if (sessionStore.currentServerUrl() != serverUrl.trim()) {
-                            withContext(Dispatchers.IO) { database.clearAllTables() }
+                            clearLocalContent()
                         }
                         sessionStore.setServerUrl(serverUrl.trim())
                         val device = "${Build.MANUFACTURER} ${Build.MODEL}".trim().ifEmpty { "Android device" }
@@ -90,7 +94,28 @@ class AuthRepository
                 runCatching { api.logout() }
                 syncScheduler.cancelAll()
                 sessionStore.clear()
-                withContext(Dispatchers.IO) { database.clearAllTables() }
+                clearLocalContent()
+            }
+        }
+
+        /**
+         * Drops everything the signed-out account left on the device: the Room
+         * cache, downloaded `.m4b` files and cached covers.
+         *
+         * The files matter as much as the rows. Clearing only the database leaves
+         * the audio and artwork of the previous account readable by anyone who
+         * later signs in on the same device, and unreachable by the app — so the
+         * space can never be reclaimed from inside it.
+         *
+         * Must be called with the [CacheCoordinator] lock already held; its mutex
+         * is not reentrant, which is why this uses the lock-free `deleteAllFiles`
+         * variants rather than the per-book `delete` methods.
+         */
+        private suspend fun clearLocalContent() {
+            withContext(Dispatchers.IO) {
+                database.clearAllTables()
+                audioDownloader.deleteAllFiles()
+                coverCache.deleteAllFiles()
             }
         }
     }

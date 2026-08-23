@@ -2,6 +2,8 @@ package live.pageless.mobile.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -10,6 +12,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import live.pageless.mobile.BuildConfig
+import live.pageless.mobile.data.download.clearDownloadedContent
 import live.pageless.mobile.data.local.BookDao
 import live.pageless.mobile.data.local.BookFacetDao
 import live.pageless.mobile.data.local.BookmarkDao
@@ -100,7 +103,19 @@ object AppModule {
             // tables that stop being part of the schema, so renamed or removed
             // entities cannot leave obsolete rows behind.
             .fallbackToDestructiveMigration(dropAllTables = true)
-            .build()
+            .addCallback(
+                object : RoomDatabase.Callback() {
+                    // A destructive migration drops the rows that name the
+                    // downloaded .m4b files and cached covers, which would strand
+                    // those files on disk: unreachable by the app, and impossible
+                    // to reclaim from inside it. The download is re-creatable from
+                    // the server; the orphan is not removable. Same reasoning as
+                    // the sign-out path in AuthRepository.clearLocalContent.
+                    override fun onDestructiveMigration(db: SupportSQLiteDatabase) {
+                        clearDownloadedContent(context.filesDir)
+                    }
+                },
+            ).build()
 
     @Provides fun provideBookDao(db: PagelessDatabase): BookDao = db.bookDao()
 
