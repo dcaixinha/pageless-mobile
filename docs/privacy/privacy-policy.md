@@ -1,6 +1,6 @@
 # Pageless Mobile — Privacy Policy
 
-**Last updated: 4 August 2026**
+**Last updated: 23 August 2026**
 
 This policy covers the **Pageless Mobile** Android app (package
 `live.pageless.mobile`), the open-source client for Pageless, a self-hosted
@@ -149,7 +149,14 @@ the publisher.
 
 ## Contact
 
-Privacy questions: **little.box.support@pm.me**
+Questions about this policy, bugs and feature requests all belong in the issue
+tracker: <https://github.com/dcaixinha/pageless-mobile/issues>.
 
-Bugs and feature requests are better raised at
-<https://github.com/dcaixinha/pageless-mobile/issues>.
+If you have found a security or privacy defect and would rather not describe it
+in public first, report it privately through GitHub:
+<https://github.com/dcaixinha/pageless-mobile/security/advisories/new>.
+
+There is no support mailbox, because there is no service behind it. Nothing you
+do in the app reaches us, so anything we could help with is either a question
+about the app — which belongs in the open, where the next person can find the
+answer — or a matter for whoever runs your server.
