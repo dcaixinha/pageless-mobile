@@ -27,10 +27,12 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import live.pageless.mobile.data.local.SessionStore
 import live.pageless.mobile.data.remote.bookDownloadUrl
 import live.pageless.mobile.data.repository.DownloadRepository
 import live.pageless.mobile.data.repository.LibraryRepository
+import live.pageless.mobile.data.repository.PlaybackTeardown
 import live.pageless.mobile.data.repository.ProgressRepository
 import java.io.File
 import javax.inject.Inject
@@ -68,7 +70,7 @@ class PlayerConnection
         private val libraryRepository: LibraryRepository,
         private val progressRepository: ProgressRepository,
         private val sessionStore: SessionStore,
-    ) {
+    ) : PlaybackTeardown {
         private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
         private val _state = MutableStateFlow(PlayerState())
@@ -107,6 +109,31 @@ class PlayerConnection
                 startPositionTicker()
                 startProgressObserver()
             }, MoreExecutors.directExecutor())
+        }
+
+        /**
+         * Ends playback for the outgoing account: stops the player, empties the
+         * queue so Media3 tears down the notification and lock-screen controls,
+         * and resets the observable state.
+         *
+         * Ordering matters to the caller. PlaybackService persists progress on a
+         * timer and bails out when there is no current media item, so clearing
+         * the queue *before* the Room tables are wiped is what stops a late save
+         * from re-creating a progress row for the account that just signed out.
+         *
+         * Deleting the downloaded file is not enough to stop audio on its own:
+         * ExoPlayer already holds an open descriptor and POSIX keeps the inode
+         * alive until it closes, so playback would continue from a file with no
+         * directory entry.
+         */
+        override suspend fun stopAndClearPlayback() {
+            withContext(Dispatchers.Main.immediate) {
+                controller?.let {
+                    it.stop()
+                    it.clearMediaItems()
+                }
+                _state.value = PlayerState()
+            }
         }
 
         fun release() {

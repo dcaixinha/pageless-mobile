@@ -28,6 +28,7 @@ class AuthRepository
         private val connectionStatusRepository: ConnectionStatusRepository,
         private val audioDownloader: AudioDownloader,
         private val coverCache: CoverCache,
+        private val playbackTeardown: PlaybackTeardown,
     ) {
         val token: Flow<String?> = sessionStore.token
         val serverUrl: Flow<String> = sessionStore.serverUrl
@@ -107,11 +108,26 @@ class AuthRepository
          * later signs in on the same device, and unreachable by the app — so the
          * space can never be reclaimed from inside it.
          *
+         * Playback is stopped too. Leaving it running would keep the previous
+         * account's audiobook audible, with its title, author and cover on the
+         * lock screen — and deleting the file does not stop it, because the
+         * player already holds an open descriptor.
+         *
+         * Download notifications go the same way. "Download complete" names the
+         * book and is dismissible rather than self-clearing, so it survives
+         * sign-out and leaves the previous account's titles in the shade.
+         *
          * Must be called with the [CacheCoordinator] lock already held; its mutex
          * is not reentrant, which is why this uses the lock-free `deleteAllFiles`
          * variants rather than the per-book `delete` methods.
          */
         private suspend fun clearLocalContent() {
+            // Before the database, deliberately. PlaybackService saves progress on
+            // a timer and skips when the player has no current item, so emptying
+            // the queue first is what stops a late save from writing a progress
+            // row for the account whose rows are about to be dropped.
+            playbackTeardown.stopAndClearPlayback()
+            audioDownloader.cancelNotifications()
             withContext(Dispatchers.IO) {
                 database.clearAllTables()
                 audioDownloader.deleteAllFiles()

@@ -71,6 +71,25 @@ object DownloadNotifications {
         title: String,
     ) = notifyTerminal(context, bookId, "Download failed", title)
 
+    /**
+     * Dismisses every download notification this app has posted.
+     *
+     * For account teardown. A "Download complete" notification names the book,
+     * is dismissible rather than self-clearing, and outlives sign-out — leaving
+     * the previous account's library titles in the shade for whoever picks the
+     * device up next.
+     *
+     * Filters by channel rather than calling `cancelAll()`, so the media
+     * notification, which Media3 owns and posts on its own channel, is left for
+     * the player to tear down.
+     */
+    fun cancelAll(context: Context) {
+        val manager = context.getSystemService<NotificationManager>() ?: return
+        manager.activeNotifications
+            .filter { it.notification.channelId == CHANNEL_ID }
+            .forEach { manager.cancel(it.tag, it.id) }
+    }
+
     private fun notifyTerminal(
         context: Context,
         bookId: String,

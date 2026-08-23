@@ -111,4 +111,13 @@ class AudioDownloader
          * [live.pageless.mobile.data.repository.CacheCoordinator] block.
          */
         fun deleteAllFiles(): Int = clearDirectoryContents(downloadsDir)
+
+        /**
+         * Dismisses any download notifications left in the shade.
+         *
+         * Lives here because this class already holds the download subsystem's
+         * application [Context], which [AuthRepository][live.pageless.mobile.data.repository.AuthRepository]
+         * deliberately does not.
+         */
+        fun cancelNotifications() = DownloadNotifications.cancelAll(context)
     }
