@@ -29,6 +29,7 @@ class AuthRepository
         private val audioDownloader: AudioDownloader,
         private val coverCache: CoverCache,
         private val playbackTeardown: PlaybackTeardown,
+        private val downloadRepository: DownloadRepository,
     ) {
         val token: Flow<String?> = sessionStore.token
         val serverUrl: Flow<String> = sessionStore.serverUrl
@@ -117,6 +118,10 @@ class AuthRepository
          * book and is dismissible rather than self-clearing, so it survives
          * sign-out and leaves the previous account's titles in the shade.
          *
+         * Downloads still running are cancelled as well. Nothing else stops
+         * them: sync work is cancelled by unique name, but downloads are unique
+         * work named per book, so only the shared tag reaches them all.
+         *
          * Must be called with the [CacheCoordinator] lock already held; its mutex
          * is not reentrant, which is why this uses the lock-free `deleteAllFiles`
          * variants rather than the per-book `delete` methods.
@@ -127,6 +132,9 @@ class AuthRepository
             // the queue first is what stops a late save from writing a progress
             // row for the account whose rows are about to be dropped.
             playbackTeardown.stopAndClearPlayback()
+            // Before the files are removed, so an in-flight worker cannot write
+            // the outgoing account's audio back into the directory just cleared.
+            downloadRepository.cancelAll()
             audioDownloader.cancelNotifications()
             withContext(Dispatchers.IO) {
                 database.clearAllTables()

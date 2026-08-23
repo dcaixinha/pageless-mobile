@@ -121,6 +121,15 @@ class DownloadWorker
         }
 
         companion object {
+            /**
+             * Shared tag on every download request.
+             *
+             * Unique work is named per book (see [workName]), which gives no way
+             * to cancel downloads collectively. Account teardown needs exactly
+             * that, so requests carry this tag too.
+             */
+            const val TAG = "pageless_download"
+
             const val KEY_BOOK_ID = "book_id"
             const val KEY_TITLE = "title"
             const val KEY_PROGRESS = "progress"

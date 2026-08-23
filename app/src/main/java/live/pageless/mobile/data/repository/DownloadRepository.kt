@@ -8,8 +8,10 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.withContext
 import live.pageless.mobile.data.download.AudioDownloader
 import live.pageless.mobile.data.download.CoverCache
 import live.pageless.mobile.data.download.DownloadWorker
@@ -83,7 +85,8 @@ class DownloadRepository
                             .Builder()
                             .setRequiredNetworkType(NetworkType.CONNECTED)
                             .build(),
-                    ).build()
+                    ).addTag(DownloadWorker.TAG)
+                    .build()
 
             workManager.enqueueUniqueWork(
                 DownloadWorker.workName(bookId),
@@ -94,6 +97,27 @@ class DownloadRepository
 
         fun cancel(bookId: String) {
             workManager.cancelUniqueWork(DownloadWorker.workName(bookId))
+        }
+
+        /**
+         * Cancels every queued and running download.
+         *
+         * For account teardown. Without it a download in flight keeps writing
+         * into the audiobooks directory that sign-out has just emptied, using a
+         * token that no longer exists, and re-creates content belonging to the
+         * account that signed out.
+         *
+         * Waits for WorkManager to record the cancellation before returning, so
+         * no further work can start; the running worker itself unwinds a moment
+         * later. That leaves a narrow window in which a partial file can be
+         * written after the directory is cleared — acceptable, because
+         * [AudioDownloader] deletes its own `.part` file when cancelled, and the
+         * next teardown clears the whole directory regardless.
+         */
+        suspend fun cancelAll() {
+            withContext(Dispatchers.IO) {
+                workManager.cancelAllWorkByTag(DownloadWorker.TAG).result.get()
+            }
         }
 
         suspend fun delete(bookId: String) {
