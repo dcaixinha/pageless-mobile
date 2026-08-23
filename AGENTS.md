@@ -82,6 +82,16 @@ docs; this file captures the conventions and gotchas an agent needs.
   declare or request `ACCESS_LOCAL_NETWORK`: Google's guidance is that apps
   targeting 36 or lower must not, because `INTERNET` already grants local access
   implicitly.
+- **The Gradle configuration cache is on** (`org.gradle.configuration-cache=true`).
+  It reuses the configuration phase, so build logic must keep declaring its
+  inputs in ways Gradle can track. The version plumbing in `app/build.gradle.kts`
+  already does — Gradle detects the `version.properties` read and correctly
+  reports *"cannot be reused because file 'version.properties' has changed"* — so
+  the release workflow's `VERSION_NAME`/`VERSION_CODE` overrides still take
+  effect. If a build change starts reading files, environment variables or
+  system properties at configuration time in a way Gradle cannot see, the cache
+  will serve stale values instead of failing loudly; prefer the `providers.*`
+  APIs. Disable per-invocation with `--no-configuration-cache` when debugging.
 - Run Gradle commands sequentially. Parallel Gradle invocations have corrupted
   KSP incremental caches in this repo (`app/build/kspCaches/...`); if that
   happens, run `./gradlew --stop` and `./gradlew clean` before rebuilding.
