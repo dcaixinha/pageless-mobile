@@ -132,8 +132,7 @@ class BookDetailViewModel
             ) { facets, collections, collectionMembers, playlists, playlistMembers ->
                 val links = mutableMapOf<LibraryFilterCategory, List<BookMetadataLink>>()
 
-                fun facetLinks(category: String): List<BookMetadataLink> =
-                    facets.filter { it.category == category }.map { BookMetadataLink(it.facetId, it.name) }
+                fun facetLinks(category: String): List<BookMetadataLink> = facets.filter { it.category == category }.map { BookMetadataLink(it.facetId, it.name) }
 
                 links[LibraryFilterCategory.AUTHORS] = facetLinks("author")
                 links[LibraryFilterCategory.NARRATORS] = facetLinks("narrator")

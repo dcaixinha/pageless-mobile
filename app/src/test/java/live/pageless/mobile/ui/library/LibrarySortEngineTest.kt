@@ -123,18 +123,17 @@ class LibrarySortEngineTest {
         published: String? = null,
         duration: Double = 0.0,
         progressUpdated: String? = null,
-    ) =
-        LibraryBookSortData(
-            id = id,
-            title = title,
-            authorNames = authors,
-            publishedDate = published,
-            addedAt = null,
-            size = null,
-            durationSeconds = duration,
-            fileModified = null,
-            progressUpdatedAt = progressUpdated,
-            progressStartedAt = null,
-            progressFinishedAt = null,
-        )
+    ) = LibraryBookSortData(
+        id = id,
+        title = title,
+        authorNames = authors,
+        publishedDate = published,
+        addedAt = null,
+        size = null,
+        durationSeconds = duration,
+        fileModified = null,
+        progressUpdatedAt = progressUpdated,
+        progressStartedAt = null,
+        progressFinishedAt = null,
+    )
 }

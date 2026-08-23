@@ -135,8 +135,7 @@ object LibraryFilterEngine {
             (filters.libraryIds.isEmpty() || libraryId in filters.libraryIds) &&
             (filters.progressStates.isEmpty() || progressState in filters.progressStates)
 
-    private fun Set<String>.matchesAny(selected: Set<String>): Boolean =
-        selected.isEmpty() || any(selected::contains)
+    private fun Set<String>.matchesAny(selected: Set<String>): Boolean = selected.isEmpty() || any(selected::contains)
 }
 
 private fun <T> Set<T>.toggle(value: T): Set<T> =

@@ -56,8 +56,7 @@ object LibrarySortEngine {
         books: List<LibraryBookSortData>,
         state: LibrarySortState,
         ignorePrefixesWhenSorting: Boolean = false,
-    ): List<String> =
-        books.sortedWith(comparator(state, ignorePrefixesWhenSorting)).map { it.id }
+    ): List<String> = books.sortedWith(comparator(state, ignorePrefixesWhenSorting)).map { it.id }
 
     private fun comparator(
         state: LibrarySortState,

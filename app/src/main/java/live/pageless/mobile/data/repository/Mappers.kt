@@ -98,14 +98,11 @@ fun SeriesBookDto.toEntity(existing: BookEntity? = null): BookEntity =
         updatedAt = updatedAt,
     )
 
-fun BookSummaryDto.toFacetEntities(): List<BookFacetEntity> =
-    facetEntities(id, authors, narrators, genres, series, publisher, language)
+fun BookSummaryDto.toFacetEntities(): List<BookFacetEntity> = facetEntities(id, authors, narrators, genres, series, publisher, language)
 
-fun BookDetailDto.toFacetEntities(): List<BookFacetEntity> =
-    facetEntities(id, authors, narrators, genres, series, publisher, language)
+fun BookDetailDto.toFacetEntities(): List<BookFacetEntity> = facetEntities(id, authors, narrators, genres, series, publisher, language)
 
-fun SeriesBookDto.toFacetEntities(): List<BookFacetEntity> =
-    facetEntities(id, authors, narrators, genres, series, publisher, language)
+fun SeriesBookDto.toFacetEntities(): List<BookFacetEntity> = facetEntities(id, authors, narrators, genres, series, publisher, language)
 
 private fun facetEntities(
     bookId: String,

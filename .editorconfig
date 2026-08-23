@@ -17,3 +17,13 @@ max_line_length = off
 # are intentionally PascalCase (e.g. `SettingsScreen`, `PagelessTheme`), which
 # ktlint's standard rule would otherwise flag.
 ktlint_standard_function-naming = disabled
+
+# Added with the ktlint 1.3.1 -> 1.8.0 tool bump. Both rules are new defaults
+# and purely cosmetic; adopting them would have reformatted 15 files that the
+# bump did not otherwise touch, for no readability gain on this codebase.
+#
+# `when-entry-bracing` braces *every* branch of a `when` as soon as one branch
+# is multiline, which is noise on the many single-expression branches here.
+# `blank-line-between-when-conditions` spaces those branches apart.
+ktlint_standard_when-entry-bracing = disabled
+ktlint_standard_blank-line-between-when-conditions = disabled

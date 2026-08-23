@@ -178,7 +178,7 @@ kotlin {
 }
 
 ktlint {
-    version.set("1.3.1")
+    version.set(libs.versions.ktlintTool.get())
     android.set(true)
     ignoreFailures.set(false)
     filter {

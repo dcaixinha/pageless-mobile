@@ -392,8 +392,7 @@ internal fun initialFilters(
     return LibraryFilters().toggle(category, id)
 }
 
-private fun List<BookFacetEntity>.idsFor(category: String): Set<String> =
-    asSequence().filter { it.category == category }.map { it.facetId }.toSet()
+private fun List<BookFacetEntity>.idsFor(category: String): Set<String> = asSequence().filter { it.category == category }.map { it.facetId }.toSet()
 
 private fun List<BookFacetEntity>.namesFor(category: String): List<String> =
     asSequence()

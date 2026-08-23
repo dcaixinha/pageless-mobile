@@ -23,7 +23,9 @@ junit = "4.13.2"
 androidxJunit = "1.2.1"
 espresso = "3.6.1"
 coroutinesTest = "1.9.0"
+# ktlint-gradle plugin; ktlintTool is the ktlint CLI it downloads and runs.
 ktlint = "14.2.0"
+ktlintTool = "1.8.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

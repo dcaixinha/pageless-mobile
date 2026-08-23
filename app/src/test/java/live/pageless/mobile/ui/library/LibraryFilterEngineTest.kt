@@ -146,18 +146,17 @@ class LibraryFilterEngineTest {
         languages: Set<String>,
         library: String,
         progress: LibraryProgressState,
-    ) =
-        LibraryBookFilterData(
-            id = id,
-            authorIds = authors,
-            narratorIds = narrators,
-            genreIds = genres,
-            seriesIds = series,
-            collectionIds = collections,
-            playlistIds = playlists,
-            publisherIds = publishers,
-            languages = languages,
-            libraryId = library,
-            progressState = progress,
-        )
+    ) = LibraryBookFilterData(
+        id = id,
+        authorIds = authors,
+        narratorIds = narrators,
+        genreIds = genres,
+        seriesIds = series,
+        collectionIds = collections,
+        playlistIds = playlists,
+        publisherIds = publishers,
+        languages = languages,
+        libraryId = library,
+        progressState = progress,
+    )
 }

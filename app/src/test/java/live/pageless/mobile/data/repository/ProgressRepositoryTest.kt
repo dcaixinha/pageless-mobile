@@ -35,15 +35,14 @@ class ProgressRepositoryTest {
         startedAt: String?,
         finishedAt: String?,
         finished: Boolean,
-    ) =
-        ProgressEntity(
-            bookId = "book",
-            currentSeconds = 100.0,
-            durationSeconds = 1000.0,
-            finished = finished,
-            startedAt = startedAt,
-            finishedAt = finishedAt,
-            lastPlayedAt = "old",
-            updatedAt = "old",
-        )
+    ) = ProgressEntity(
+        bookId = "book",
+        currentSeconds = 100.0,
+        durationSeconds = 1000.0,
+        finished = finished,
+        startedAt = startedAt,
+        finishedAt = finishedAt,
+        lastPlayedAt = "old",
+        updatedAt = "old",
+    )
 }
